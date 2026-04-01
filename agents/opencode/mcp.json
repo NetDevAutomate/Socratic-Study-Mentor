@@ -3,6 +3,10 @@
     "speaker": {
       "command": "uvx",
       "args": ["--from", "mcp[cli]", "mcp", "run", "/Users/ataylor/code/personal/tools/socratic-study-mentor/agents/mcp/study-speak-server.py"]
+    },
+    "cmux": {
+      "command": "node",
+      "args": ["/Users/ataylor/code/tools/cmuxlayer/dist/index.js"]
     }
   }
 }
