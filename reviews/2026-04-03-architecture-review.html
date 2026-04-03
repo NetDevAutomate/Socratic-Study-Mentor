@@ -1,0 +1,2308 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AuDHD-aware Socratic study toolkit with AI session management">
+      
+      
+      
+        <link rel="canonical" href="https://netdevautomate.github.io/Socratic-Study-Mentor/reviews/2026-04-03-architecture-review.html">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+    
+    
+      
+        <title>Architecture Review: Socratic Study Mentor - Socratic Study Mentor</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+        <script src="../assets/external/unpkg.com/iframe-worker/shim.js"></script>
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/audhd.css">
+    
+      <link rel="stylesheet" href="../stylesheets/fonts.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture-review-socratic-study-mentor" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Socratic Study Mentor" class="md-header__button md-logo" aria-label="Socratic Study Mentor" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Socratic Study Mentor
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture Review: Socratic Study Mentor
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Socratic Study Mentor" class="md-nav__button md-logo" aria-label="Socratic Study Mentor" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    Socratic Study Mentor
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup-guide.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-install.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audhd-learning-philosophy.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AuDHD Philosophy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../session-protocol.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Session Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli-reference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../voice-output.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Voice Output
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audhd-framework.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AuDHD Framework
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../socratic-engine.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Socratic Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network-bridges.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Bridges
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artefacts.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Artefacts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-architecture-current-vs-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Architecture: Current vs Target
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Architecture: Current vs Target">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-was-planned-vs-what-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What Was Planned vs What Exists
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-layer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Layer Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-key-architectural-strengths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Key Architectural Strengths
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Key Architectural Strengths">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-fcis-pattern-the-standout-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 FCIS Pattern — The Standout Feature
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-web-layer-already-has-router-separation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Web Layer — Already Has Router Separation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-agent-framework-shared-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Agent Framework — Shared Definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-ipc-file-protocol-clean-separation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 IPC File Protocol — Clean Separation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-architectural-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Architectural Issues
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Architectural Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-service-layer-partially-wired" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Service Layer — Partially Wired
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-two-sqlite-databases-sessionsdb-reviewdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Two SQLite Databases — sessions.db + review.db
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-cli-module-naming-inconsistent-prefixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 CLI Module Naming — Inconsistent Prefixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-settingspy-vs-config_loaderpy-two-config-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 settings.py vs config_loader.py — Two Config Systems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-web-dashboard-sse-via-mtime-polling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Web Dashboard — SSE via mtime Polling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-test-harness-three-tiers-with-different-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Test Harness — Three Tiers with Different Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-package-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Package Boundaries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Package Boundaries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-studyctl-vs-agent-session-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 studyctl vs agent-session-tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-dependency-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Dependency Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-code-quality-observations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Code Quality Observations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Code Quality Observations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-strengths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Strengths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-concerns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Concerns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-data-flow-session-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Data Flow — Session Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-comparison-with-mailgraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Comparison with mailgraph
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-recommendations-priority-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Recommendations — Priority Order
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Recommendations — Priority Order">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p0-move-_clean_logicpy-out-of-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0: Move _clean_logic.py Out of cli/
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p0-wire-service-layer-completely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0: Wire Service Layer Completely
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1-unify-config-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1: Unify Config Systems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1-add-nightly-ci-for-uat-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1: Add Nightly CI for UAT Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p2-split-query_sessionspy-monolith" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2: Split query_sessions.py Monolith
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p3-fix-vscode-circular-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P3: Fix VSCode Circular Import
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-documentation-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Documentation Health
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-summary-scorecard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Summary Scorecard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-key-takeaway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Key Takeaway
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="architecture-review-socratic-study-mentor">Architecture Review: Socratic Study Mentor<a class="headerlink" href="#architecture-review-socratic-study-mentor" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Date: 2026-04-03
+Scope: Current state vs target state, code quality, architectural gaps, recommendations
+Corpus: 799+ tests, 2 packages (studyctl + agent-session-tools), monorepo</p>
+</blockquote>
+<hr />
+<h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
+<p>Socratic Study Mentor is a mature, well-structured monorepo with two independently publishable packages. The project has evolved from a collection of study scripts into a cohesive platform with CLI, TUI, web PWA, MCP server, and multi-agent support. The FCIS (Functional Core, Imperative Shell) pattern is applied consistently, test coverage is exceptional, and the documentation is thorough.</p>
+<p><strong>Key findings:</strong>
+- <strong>Monorepo structure is clean</strong> — two packages with clear boundaries, workspace-aware tooling
+- <strong>FCIS pattern is the strongest architectural choice</strong> — pure functions in <code>_clean_logic.py</code>, <code>backlog_logic.py</code> with zero-mock tests
+- <strong>Web layer has proper router separation</strong> — unlike mailgraph, routes are already split into <code>web/routes/</code>
+- <strong>Service layer is partially wired</strong> — <code>services/review.py</code> and <code>services/content.py</code> exist but not all consumers use them
+- <strong>Agent framework is well-designed</strong> — <code>agents/shared/</code> eliminates ~700 lines of duplication
+- <strong>Compaction was the right call</strong> — roadmap shows clear focus on 4 core features after stripping bloat</p>
+<hr />
+<h2 id="1-architecture-current-vs-target">1. Architecture: Current vs Target<a class="headerlink" href="#1-architecture-current-vs-target" title="Permanent link">&para;</a></h2>
+<h3 id="11-what-was-planned-vs-what-exists">1.1 What Was Planned vs What Exists<a class="headerlink" href="#11-what-was-planned-vs-what-exists" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart LR
+    subgraph "Target (Roadmap)"
+        T1["v1.0: Foundation\nMonorepo, spaced rep, session export"]
+        T2["v1.1: AuDHD Intelligence\nWin tracking, energy, struggle detection"]
+        T3["v1.2: Community &amp; Polish\nPyPI, TUI, MkDocs, multi-agent"]
+        T4["v1.3: Pedagogical\nBreak protocol, wind-down, teach-back"]
+        T5["v1.4: Knowledge Bridges\nDynamic bridges, configurable domains"]
+        T6["v1.5: Code Quality\nBug fixes, unified agents, docs site"]
+        T7["v2.0: Unified Platform\nContent absorption, Homebrew, 327 tests"]
+        T8["v2.1: Health &amp; Self-Update\nDoctor, upgrade, install-mentor"]
+        T9["v2.2: Live Session\nTmux, sidebar, web dashboard, IPC"]
+    end
+
+    subgraph "Actual (2026-04-03)"
+        A1["v1.0: COMPLETE\nMonorepo, export, sync, FTS5"]
+        A2["v1.1: COMPLETE\nEnergy, struggle, wins, resume, hyperfocus"]
+        A3["v1.2: PARTIAL\nPyPI done, TUI done, MkDocs done,\nVSCode circular import pending"]
+        A4["v1.3: COMPLETE\nBreak, wind-down, teach-back"]
+        A5["v1.4: COMPLETE\nBridges, configurable domains"]
+        A6["v1.5: COMPLETE\nBugs fixed, unified agents, docs"]
+        A7["v2.0: COMPLETE\nContent absorbed, Homebrew, 327 tests"]
+        A8["v2.1: COMPLETE\nDoctor, upgrade, install-mentor"]
+        A9["v2.2: PARTIAL\nTmux + sidebar + web done,\npolish items pending"]
+    end
+
+    T1 --&gt; A1
+    T2 --&gt; A2
+    T3 --&gt; A3
+    T4 --&gt; A4
+    T5 --&gt; A5
+    T6 --&gt; A6
+    T7 --&gt; A7
+    T8 --&gt; A8
+    T9 --&gt; A9
+
+    style A1 fill:#d5e8d4,stroke:#82b366
+    style A2 fill:#d5e8d4,stroke:#82b366
+    style A3 fill:#fff2cc,stroke:#d6ae22
+    style A4 fill:#d5e8d4,stroke:#82b366
+    style A5 fill:#d5e8d4,stroke:#82b366
+    style A6 fill:#d5e8d4,stroke:#82b366
+    style A7 fill:#d5e8d4,stroke:#82b366
+    style A8 fill:#d5e8d4,stroke:#82b366
+    style A9 fill:#fff2cc,stroke:#d6ae22</code></pre>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Planned</th>
+<th>Actual</th>
+<th>Gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>v1.0</strong></td>
+<td>Monorepo, spaced rep, session export, FTS5, sync</td>
+<td><strong>Complete</strong></td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>v1.1</strong></td>
+<td>Win tracking, energy-adaptive, struggle detection, resume, hyperfocus, calendar</td>
+<td><strong>Complete</strong></td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>v1.2</strong></td>
+<td>PyPI, TUI, MkDocs, multi-agent, VSCode, watchdog</td>
+<td><strong>Partial</strong> — VSCode circular import, watchdog not done</td>
+<td>Minor</td>
+</tr>
+<tr>
+<td><strong>v1.3</strong></td>
+<td>Break protocol, wind-down, teach-back</td>
+<td><strong>Complete</strong></td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>v1.4</strong></td>
+<td>Knowledge bridges, configurable domains</td>
+<td><strong>Complete</strong></td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>v1.5</strong></td>
+<td>Bug fixes, unified agents, docs site</td>
+<td><strong>Complete</strong></td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>v2.0</strong></td>
+<td>Content absorption, Homebrew, 327 tests</td>
+<td><strong>Complete</strong></td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>v2.1</strong></td>
+<td>Doctor, upgrade, install-mentor</td>
+<td><strong>Complete</strong></td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>v2.2</strong></td>
+<td>Tmux, sidebar, web dashboard, IPC</td>
+<td><strong>Partial</strong> — core done, polish pending</td>
+<td>Break suggestions, energy streaks, tmux-resurrect compat</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-layer-architecture">1.2 Layer Architecture<a class="headerlink" href="#12-layer-architecture" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    subgraph "Presentation Layer"
+        CLI_CLI["CLI (Click)\ncli/_study.py, _topics.py,\n_clean.py, _doctor.py, etc."]
+        CLI_TUI["TUI (Textual)\ntui/sidebar.py"]
+        CLI_WEB["Web (FastAPI + HTMX)\nweb/app.py, web/routes/"]
+        CLI_MCP["MCP Server (FastMCP stdio)\nmcp/server.py, mcp/tools.py"]
+    end
+
+    subgraph "Service Layer"
+        SVC_REVIEW["services/review.py\nSpaced repetition logic"]
+        SVC_CONTENT["services/content.py\nContent pipeline orchestration"]
+    end
+
+    subgraph "FCIS Cores (Functional Core)"
+        FCIS_CLEAN["_clean_logic.py\nplan_clean()"]
+        FCIS_BACKLOG["backlog_logic.py\nformat, score, persist"]
+    end
+
+    subgraph "Data Layer"
+        DATA_PARKING["parking.py\nParked topics CRUD"]
+        DATA_HISTORY["history.py\nSession CRUD + FTS5"]
+        DATA_STATE["session_state.py\nIPC file protocol"]
+        DATA_REVIEW["review_db.py\nSM-2 spaced repetition"]
+        DATA_TMUX["tmux.py\nSession management"]
+    end
+
+    subgraph "Doctor Package"
+        DOC_CORE["doctor/core.py"]
+        DOC_CONFIG["doctor/config.py"]
+        DOC_DATABASE["doctor/database.py"]
+        DOC_AGENTS["doctor/agents.py"]
+        DOC_DEPS["doctor/deps.py"]
+        DOC_UPDATES["doctor/updates.py"]
+        DOC_MODELS["doctor/models.py"]
+    end
+
+    subgraph "Content Package"
+        CNT_SPLITTER["content/splitter.py"]
+        CNT_NLM["content/notebooklm_client.py"]
+        CNT_SYLLABUS["content/syllabus.py"]
+        CNT_STORAGE["content/storage.py"]
+        CNT_MODELS["content/models.py"]
+    end
+
+    subgraph "External Systems"
+        TMUX_EXT["tmux"]
+        NLM_EXT["NotebookLM API"]
+        AGENT_EXT["Claude Code, Kiro, Gemini, OpenCode"]
+        SQLITE_DB[("sessions.db\nSQLite WAL v17")]
+        REVIEW_DB[("review.db\nSM-2")]
+    end
+
+    CLI_CLI --&gt; FCIS_CLEAN
+    CLI_CLI --&gt; FCIS_BACKLOG
+    CLI_CLI --&gt; DATA_PARKING
+    CLI_CLI --&gt; DATA_HISTORY
+    CLI_CLI --&gt; DATA_STATE
+    CLI_CLI --&gt; DATA_TMUX
+    CLI_CLI --&gt; DOC_CORE
+    CLI_CLI --&gt; SVC_CONTENT
+    CLI_CLI --&gt; SVC_REVIEW
+
+    CLI_TUI --&gt; DATA_STATE
+    CLI_TUI --&gt; FCIS_CLEAN
+
+    CLI_WEB --&gt; DATA_STATE
+    CLI_WEB --&gt; DATA_HISTORY
+    CLI_WEB --&gt; SVC_CONTENT
+    CLI_WEB --&gt; SVC_REVIEW
+
+    CLI_MCP --&gt; FCIS_BACKLOG
+    CLI_MCP --&gt; DATA_PARKING
+    CLI_MCP --&gt; DATA_HISTORY
+
+    FCIS_CLEAN --&gt; DATA_TMUX
+    FCIS_BACKLOG --&gt; DATA_PARKING
+
+    DATA_PARKING --&gt; SQLITE_DB
+    DATA_HISTORY --&gt; SQLITE_DB
+    DATA_REVIEW --&gt; REVIEW_DB
+
+    SVC_CONTENT --&gt; CNT_SPLITTER
+    SVC_CONTENT --&gt; CNT_NLM
+    SVC_CONTENT --&gt; CNT_STORAGE
+
+    DOC_CORE --&gt; DOC_CONFIG
+    DOC_CORE --&gt; DOC_DATABASE
+    DOC_CORE --&gt; DOC_AGENTS
+    DOC_CORE --&gt; DOC_DEPS
+    DOC_CORE --&gt; DOC_UPDATES
+
+    DOC_DATABASE --&gt; SQLITE_DB
+    DOC_DATABASE --&gt; REVIEW_DB
+
+    style CLI_CLI fill:#e1d5e7,stroke:#9673a6
+    style CLI_TUI fill:#e1d5e7,stroke:#9673a6
+    style CLI_WEB fill:#e1d5e7,stroke:#9673a6
+    style CLI_MCP fill:#e1d5e7,stroke:#9673a6
+    style FCIS_CLEAN fill:#d5e8d4,stroke:#82b366
+    style FCIS_BACKLOG fill:#d5e8d4,stroke:#82b366
+    style SVC_REVIEW fill:#dae8fc,stroke:#6c8ebf
+    style SVC_CONTENT fill:#dae8fc,stroke:#6c8ebf</code></pre>
+<p><strong>Legend</strong>: Purple = presentation, Green = functional core, Blue = service layer</p>
+<hr />
+<h2 id="2-key-architectural-strengths">2. Key Architectural Strengths<a class="headerlink" href="#2-key-architectural-strengths" title="Permanent link">&para;</a></h2>
+<h3 id="21-fcis-pattern-the-standout-feature">2.1 FCIS Pattern — The Standout Feature<a class="headerlink" href="#21-fcis-pattern-the-standout-feature" title="Permanent link">&para;</a></h3>
+<p>The Functional Core, Imperative Shell pattern is applied consistently and correctly:</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph "Functional Core (pure, testable)"
+        PLAN_CLEAN["_clean_logic.py\nplan_clean(sessions, ipc_dir)\n→ CleanPlan"]
+        SCORE_BACKLOG["backlog_logic.py\nscore_backlog_items(items)\n→ scored list"]
+        FORMAT_BACKLOG["backlog_logic.py\nformat_backlog_list(items)\n→ formatted string"]
+        AUTO_PERSIST["backlog_logic.py\nplan_auto_persist(topics)\n→ persist plan"]
+    end
+
+    subgraph "Imperative Shell (I/O, wiring)"
+        CLEAN_CMD["_clean.py\nReads files → calls plan_clean → executes"]
+        TOPICS_CMD["_topics.py\nReads DB → calls score_backlog → prints"]
+        STUDY_CMD["_study.py\nCreates tmux → calls plan_auto_persist → writes IPC"]
+    end
+
+    subgraph "Tests"
+        T1["test_clean.py\n17 tests, ZERO mocks"]
+        T2["test_backlog_logic.py\n22 tests, ZERO mocks"]
+    end
+
+    PLAN_CLEAN --&gt; CLEAN_CMD
+    SCORE_BACKLOG --&gt; TOPICS_CMD
+    FORMAT_BACKLOG --&gt; TOPICS_CMD
+    AUTO_PERSIST --&gt; STUDY_CMD
+
+    T1 -.-&gt; PLAN_CLEAN
+    T2 -.-&gt; SCORE_BACKLOG
+
+    style PLAN_CLEAN fill:#d5e8d4,stroke:#82b366
+    style SCORE_BACKLOG fill:#d5e8d4,stroke:#82b366
+    style FORMAT_BACKLOG fill:#d5e8d4,stroke:#82b366
+    style AUTO_PERSIST fill:#d5e8d4,stroke:#82b366
+    style CLEAN_CMD fill:#f8cecc,stroke:#b85450
+    style TOPICS_CMD fill:#f8cecc,stroke:#b85450
+    style STUDY_CMD fill:#f8cecc,stroke:#b85450</code></pre>
+<p><strong>Why this matters</strong>: Pure functions are trivially testable. <code>test_clean.py</code> has 17 tests with zero mocks because <code>plan_clean()</code> takes data structures and returns a plan — no I/O. This is the gold standard for testability.</p>
+<h3 id="22-web-layer-already-has-router-separation">2.2 Web Layer — Already Has Router Separation<a class="headerlink" href="#22-web-layer-already-has-router-separation" title="Permanent link">&para;</a></h3>
+<p>Unlike mailgraph, the web layer is properly structured:</p>
+<div class="highlight"><pre><span></span><code>web/
+├── app.py              # FastAPI factory, lifespan, middleware
+├── routes/
+│   ├── __init__.py
+│   ├── session.py      # /session, /session/api/*
+│   ├── history.py      # /history
+│   ├── courses.py      # /courses
+│   ├── cards.py        # /cards (flashcards)
+│   └── artefacts.py    # /artefacts
+└── static/             # HTML, CSS, JS, vendor/
+</code></pre></div>
+<p>This is the pattern mailgraph should adopt.</p>
+<h3 id="23-agent-framework-shared-definitions">2.3 Agent Framework — Shared Definitions<a class="headerlink" href="#23-agent-framework-shared-definitions" title="Permanent link">&para;</a></h3>
+<p>The <code>agents/shared/</code> directory eliminates ~700 lines of duplication:</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph "Shared Framework"
+        PERSONA_STUDY["shared/personas/study.md"]
+        PERSONA_CO["shared/personas/co-study.md"]
+        BREAK_SCI["shared/break-science.md"]
+        TEACH_BACK["shared/teach-back-protocol.md"]
+        WIND_DOWN["shared/wind-down-protocol.md"]
+        BRIDGES["shared/knowledge-bridging.md"]
+        SESSION_PROTO["shared/session-protocol.md"]
+    end
+
+    subgraph "Platform-Specific Wrappers"
+        CLAUDE["agents/claude/socratic-mentor.md"]
+        KIRO["agents/kiro/study-mentor/"]
+        GEMINI["agents/gemini/study-mentor.md"]
+        OPENCODE["agents/opencode/study-mentor.md"]
+    end
+
+    PERSONA_STUDY --&gt; CLAUDE
+    PERSONA_STUDY --&gt; KIRO
+    PERSONA_STUDY --&gt; GEMINI
+    PERSONA_STUDY --&gt; OPENCODE
+
+    BREAK_SCI --&gt; CLAUDE
+    TEACH_BACK --&gt; CLAUDE
+    WIND_DOWN --&gt; CLAUDE
+    BRIDGES --&gt; CLAUDE
+
+    style PERSONA_STUDY fill:#d5e8d4,stroke:#82b366
+    style BREAK_SCI fill:#d5e8d4,stroke:#82b366
+    style TEACH_BACK fill:#d5e8d4,stroke:#82b366
+    style WIND_DOWN fill:#d5e8d4,stroke:#82b366</code></pre>
+<h3 id="24-ipc-file-protocol-clean-separation">2.4 IPC File Protocol — Clean Separation<a class="headerlink" href="#24-ipc-file-protocol-clean-separation" title="Permanent link">&para;</a></h3>
+<p>The IPC file protocol (<code>session-state.json</code>, <code>session-topics.md</code>, <code>session-parking.md</code>) is a clean way to share state between the tmux agent, sidebar TUI, and web dashboard without requiring a running server:</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph "Writer"
+        AGENT["AI Agent\nwrites to IPC files"]
+    end
+
+    subgraph "IPC Files\n~/.config/studyctl/"
+        STATE["session-state.json\n{energy, timer, topics}"]
+        TOPICS["session-topics.md\nCurrent topic list"]
+        PARKING["session-parking.md\nParked questions"]
+    end
+
+    subgraph "Readers"
+        SIDEBAR["Textual Sidebar\npolls every 1s"]
+        WEB["Web Dashboard\nSSE via mtime polling"]
+        MCP["MCP Tools\nread on demand"]
+    end
+
+    AGENT --&gt; STATE
+    AGENT --&gt; TOPICS
+    AGENT --&gt; PARKING
+
+    STATE --&gt; SIDEBAR
+    STATE --&gt; WEB
+    STATE --&gt; MCP
+    TOPICS --&gt; SIDEBAR
+    TOPICS --&gt; WEB
+    PARKING --&gt; SIDEBAR
+    PARKING --&gt; WEB
+
+    style AGENT fill:#e1d5e7,stroke:#9673a6
+    style STATE fill:#fff2cc,stroke:#d6ae22
+    style TOPICS fill:#fff2cc,stroke:#d6ae22
+    style PARKING fill:#fff2cc,stroke:#d6ae22</code></pre>
+<p><strong>Tradeoff</strong>: File-based polling instead of a message queue. For a single-user tool, this is the right choice — simpler, no additional process, works offline.</p>
+<hr />
+<h2 id="3-architectural-issues">3. Architectural Issues<a class="headerlink" href="#3-architectural-issues" title="Permanent link">&para;</a></h2>
+<h3 id="31-service-layer-partially-wired">3.1 Service Layer — Partially Wired<a class="headerlink" href="#31-service-layer-partially-wired" title="Permanent link">&para;</a></h3>
+<p><strong>Problem</strong>: <code>services/review.py</code> and <code>services/content.py</code> exist but not all consumers use them.</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph "services/ — exists"
+        SVC_R["services/review.py\nSpaced repetition service"]
+        SVC_C["services/content.py\nContent pipeline service"]
+    end
+
+    subgraph "CLI commands"
+        CLI_REVIEW["cli/_review.py"]
+        CLI_CONTENT["cli/_content.py"]
+    end
+
+    subgraph "Web routes"
+        WEB_CARDS["routes/cards.py"]
+        WEB_COURSES["routes/courses.py"]
+    end
+
+    subgraph "Data layer"
+        REVIEW_DB["review_db.py\nDirect DB access"]
+    end
+
+    CLI_REVIEW --&gt; REVIEW_DB
+    CLI_REVIEW -.-&gt;|should use| SVC_R
+    CLI_CONTENT --&gt; SVC_C
+    WEB_CARDS --&gt; REVIEW_DB
+    WEB_CARDS -.-&gt;|should use| SVC_R
+    WEB_COURSES --&gt; SVC_C
+
+    SVC_R --&gt; REVIEW_DB
+
+    style SVC_R fill:#fff2cc,stroke:#d6ae22
+    style SVC_C fill:#d5e8d4,stroke:#82b366
+    style REVIEW_DB fill:#f8cecc,stroke:#b85450</code></pre>
+<p><strong>Impact</strong>: <code>cli/_review.py</code> and <code>routes/cards.py</code> both access <code>review_db.py</code> directly, duplicating the data access pattern. The service layer should be the single point of access.</p>
+<p><strong>Fix</strong>: Route all review/card access through <code>services/review.py</code>.</p>
+<h3 id="32-two-sqlite-databases-sessionsdb-reviewdb">3.2 Two SQLite Databases — sessions.db + review.db<a class="headerlink" href="#32-two-sqlite-databases-sessionsdb-reviewdb" title="Permanent link">&para;</a></h3>
+<p><strong>Problem</strong>: Two separate SQLite databases with no cross-database queries.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph "sessions.db (v17)"
+        S_SESSIONS["sessions"]
+        S_MESSAGES["messages"]
+        S_STUDY["study_sessions"]
+        S_PROGRESS["study_progress"]
+        S_TEACHBACK["teach_back_scores"]
+        S_PARKED["parked_topics"]
+        S_CONCEPTS["concepts"]
+        S_BRIDGES["knowledge_bridges"]
+    end
+
+    subgraph "review.db"
+        R_CARDS["flashcards"]
+        R_SCHEDULES["review_schedules"]
+        R_HISTORY["review_history"]
+    end
+
+    S_SESSIONS -.-&gt;|no FK| R_CARDS
+    S_PROGRESS -.-&gt;|no FK| R_HISTORY
+
+    style S_SESSIONS fill:#dae8fc,stroke:#6c8ebf
+    style R_CARDS fill:#f8cecc,stroke:#b85450</code></pre>
+<p><strong>Tradeoff analysis</strong>:
+- <strong>Pro</strong>: Separation of concerns — session tracking vs spaced repetition are independent lifecycles
+- <strong>Pro</strong>: review.db can be synced independently via <code>session-sync</code>
+- <strong>Con</strong>: Can't query "show flashcards for topics I struggled with in sessions"
+- <strong>Con</strong>: Two database connections to manage</p>
+<p><strong>Recommendation</strong>: Keep separate for now. The separation is intentional and correct. If cross-database queries become needed, use SQLite's <code>ATTACH DATABASE</code> rather than merging.</p>
+<h3 id="33-cli-module-naming-inconsistent-prefixes">3.3 CLI Module Naming — Inconsistent Prefixes<a class="headerlink" href="#33-cli-module-naming-inconsistent-prefixes" title="Permanent link">&para;</a></h3>
+<p><strong>Problem</strong>: CLI modules use <code>_</code> prefix inconsistently:</p>
+<div class="highlight"><pre><span></span><code>cli/_study.py        # underscore (private-ish)
+cli/_topics.py       # underscore
+cli/_clean.py        # underscore
+cli/_clean_logic.py  # underscore (but this is FCIS core, not CLI)
+cli/_doctor.py       # underscore
+cli/_review.py       # underscore
+cli/_session.py      # underscore
+cli/_web.py          # underscore
+cli/_shared.py       # underscore
+cli/_setup.py        # underscore
+cli/_config.py       # underscore
+cli/_content.py      # underscore
+cli/_sync.py         # underscore
+cli/_upgrade.py      # underscore
+cli/_lazy.py         # underscore (LazyGroup implementation)
+</code></pre></div>
+<p><strong>Issue</strong>: <code>_clean_logic.py</code> is not a CLI module — it's an FCIS core function. It shouldn't be in <code>cli/</code> at all.</p>
+<p><strong>Recommended structure</strong>:</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph "cli/ — only CLI handlers"
+        C_STUDY["_study.py"]
+        C_TOPICS["_topics.py"]
+        C_CLEAN["_clean.py"]
+        C_DOCTOR["_doctor.py"]
+        C_REVIEW["_review.py"]
+        C_SESSION["_session.py"]
+        C_WEB["_web.py"]
+        C_SETUP["_setup.py"]
+        C_CONFIG["_config.py"]
+        C_CONTENT["_content.py"]
+        C_SYNC["_sync.py"]
+        C_UPGRADE["_upgrade.py"]
+        C_SHARED["_shared.py"]
+        C_LAZY["_lazy.py"]
+    end
+
+    subgraph "logic/ — FCIS cores"
+        L_CLEAN["clean_logic.py"]
+        L_BACKLOG["backlog_logic.py"]
+    end
+
+    subgraph "data/ — data access"
+        D_PARKING["parking.py"]
+        D_HISTORY["history.py"]
+        D_STATE["session_state.py"]
+        D_REVIEW["review_db.py"]
+        D_TMUX["tmux.py"]
+    end
+
+    style L_CLEAN fill:#d5e8d4,stroke:#82b366
+    style L_BACKLOG fill:#d5e8d4,stroke:#82b366
+    style C_CLEAN fill:#f8cecc,stroke:#b85450</code></pre>
+<h3 id="34-settingspy-vs-config_loaderpy-two-config-systems">3.4 <code>settings.py</code> vs <code>config_loader.py</code> — Two Config Systems<a class="headerlink" href="#34-settingspy-vs-config_loaderpy-two-config-systems" title="Permanent link">&para;</a></h3>
+<p><strong>Problem</strong>: <code>studyctl/settings.py</code> and <code>agent-session-tools/config_loader.py</code> are two different config systems in the same monorepo.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph "studyctl"
+        SETTINGS["settings.py\nYAML config\n~/.config/studyctl/config.yaml"]
+    end
+
+    subgraph "agent-session-tools"
+        CFG_LOADER["config_loader.py\nJSON config\n~/.config/studyctl/sessions.json"]
+    end
+
+    SETTINGS -.-&gt;|different format| CFG_LOADER
+
+    style SETTINGS fill:#fff2cc,stroke:#d6ae22
+    style CFG_LOADER fill:#fff2cc,stroke:#d6ae22</code></pre>
+<p><strong>Impact</strong>: Users configure studyctl via YAML but agent-session-tools via JSON. Different paths, different formats.</p>
+<p><strong>Recommendation</strong>: Unify under a single config system. The YAML approach in <code>settings.py</code> is better (structured, supports comments). Migrate <code>config_loader.py</code> to use the same YAML format.</p>
+<h3 id="35-web-dashboard-sse-via-mtime-polling">3.5 Web Dashboard — SSE via mtime Polling<a class="headerlink" href="#35-web-dashboard-sse-via-mtime-polling" title="Permanent link">&para;</a></h3>
+<p><strong>Problem</strong>: The web dashboard uses file modification time polling for SSE, not true push:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># web/routes/session.py — SSE endpoint</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">session_events</span><span class="p">():</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">mtime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">ipc_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mtime</span> <span class="o">!=</span> <span class="n">last_mtime</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;data: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="n">last_mtime</span> <span class="o">=</span> <span class="n">mtime</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># poll every 500ms</span>
+</code></pre></div>
+<p><strong>Tradeoff</strong>: For a single-user local tool, this is acceptable. But it means:
+- 500ms latency between agent action and dashboard update
+- File system polling overhead (negligible for single file)
+- No backpressure mechanism</p>
+<p><strong>Recommendation</strong>: Accept as-is for v2.2. If moving to multi-user (Phase 3: LAN), replace with proper WebSocket or Server-Sent Events with in-memory event queue.</p>
+<h3 id="36-test-harness-three-tiers-with-different-requirements">3.6 Test Harness — Three Tiers with Different Requirements<a class="headerlink" href="#36-test-harness-three-tiers-with-different-requirements" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    subgraph "CI-Safe (786 tests)"
+        UNIT1["Unit tests — pure logic\nbacklog_logic, clean_logic"]
+        UNIT2["Unit tests — CLI handlers\nwith mocked I/O"]
+        UNIT3["Unit tests — exporters\nagent-session-tools"]
+    end
+
+    subgraph "Integration (13 tests)"
+        INT_DB["Real SQLite DB tests\nhistory, parking, review_db"]
+    end
+
+    subgraph "UAT (9 tests — needs tmux)"
+        UAT_TEXTUAL["Textual Pilot tests\n5 tests"]
+        UAT_TMUX["tmux lifecycle tests\n15 tests planned, 6 existing"]
+        UAT_PEXPECT["pexpect UAT tests\n6 tests"]
+    end
+
+    style UNIT1 fill:#d5e8d4,stroke:#82b366
+    style UNIT2 fill:#d5e8d4,stroke:#82b366
+    style UNIT3 fill:#d5e8d4,stroke:#82b366
+    style INT_DB fill:#fff2cc,stroke:#d6ae22
+    style UAT_TEXTUAL fill:#f8cecc,stroke:#b85450
+    style UAT_TMUX fill:#f8cecc,stroke:#b85450
+    style UAT_PEXPECT fill:#f8cecc,stroke:#b85450</code></pre>
+<p><strong>Concern</strong>: The UAT tests require tmux and are excluded from CI. This means tmux-related regressions won't be caught automatically.</p>
+<p><strong>Recommendation</strong>: Add a nightly CI job that runs on a macOS runner with tmux installed.</p>
+<hr />
+<h2 id="4-package-boundaries">4. Package Boundaries<a class="headerlink" href="#4-package-boundaries" title="Permanent link">&para;</a></h2>
+<h3 id="41-studyctl-vs-agent-session-tools">4.1 studyctl vs agent-session-tools<a class="headerlink" href="#41-studyctl-vs-agent-session-tools" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart LR
+    subgraph "studyctl (pip install studyctl)"
+        SC_CLI["CLI commands\nstudy, content, doctor, web, review"]
+        SC_MCP["MCP server\n10 tools"]
+        SC_TUI["Textual sidebar"]
+        SC_WEB["FastAPI + HTMX"]
+        SC_FCIS["FCIS cores\nclean_logic, backlog_logic"]
+        SC_DATA["Data layer\nparking, history, state, tmux"]
+        SC_DOCTOR["Doctor package\n7 categories, 19 checks"]
+        SC_CONTENT["Content package\nsplitter, notebooklm, syllabus"]
+    end
+
+    subgraph "agent-session-tools (pip install agent-session-tools)"
+        AST_EXPORT["Export sessions\nfrom 8+ AI tools"]
+        AST_QUERY["Query sessions\nFTS5 + semantic search"]
+        AST_SYNC["Cross-machine sync\npyrage encrypted"]
+        AST_EXPORTERS["Exporters\nClaude, Kiro, Gemini, OpenCode,\nAider, LiteLLM, Repoprompt, OpenCode"]
+        AST_MIGRATIONS["DB migrations\nv0 → v17"]
+    end
+
+    subgraph "Shared"
+        SQLITE[("sessions.db")]
+        REVIEW[("review.db")]
+    end
+
+    SC_CLI --&gt; SC_FCIS
+    SC_CLI --&gt; SC_DATA
+    SC_CLI --&gt; SC_DOCTOR
+    SC_CLI --&gt; SC_CONTENT
+    SC_MCP --&gt; SC_FCIS
+    SC_MCP --&gt; SC_DATA
+    SC_TUI --&gt; SC_DATA
+    SC_WEB --&gt; SC_DATA
+
+    AST_EXPORT --&gt; SQLITE
+    AST_QUERY --&gt; SQLITE
+    AST_SYNC --&gt; SQLITE
+
+    SC_DATA --&gt; SQLITE
+    SC_DATA --&gt; REVIEW
+
+    style SC_CLI fill:#e1d5e7,stroke:#9673a6
+    style SC_MCP fill:#e1d5e7,stroke:#9673a6
+    style SC_TUI fill:#e1d5e7,stroke:#9673a6
+    style SC_WEB fill:#e1d5e7,stroke:#9673a6
+    style AST_EXPORT fill:#dae8fc,stroke:#6c8ebf
+    style AST_QUERY fill:#dae8fc,stroke:#6c8ebf
+    style AST_SYNC fill:#dae8fc,stroke:#6c8ebf</code></pre>
+<p><strong>Boundary assessment</strong>: The package boundary is clean. <code>studyctl</code> handles the study experience, <code>agent-session-tools</code> handles session export/search/sync. They share the same SQLite database but have independent publishable lifecycles.</p>
+<h3 id="42-dependency-flow">4.2 Dependency Flow<a class="headerlink" href="#42-dependency-flow" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    subgraph "No external deps"
+        FCIS_CLEAN["clean_logic.py"]
+        FCIS_BACKLOG["backlog_logic.py"]
+        SESSION_STATE["session_state.py"]
+        TMUX["tmux.py"]
+    end
+
+    subgraph "SQLite only"
+        PARKING["parking.py"]
+        HISTORY["history.py"]
+        REVIEW_DB["review_db.py"]
+    end
+
+    subgraph "External deps"
+        DOCTOR["doctor/\npyyaml, subprocess, packaging"]
+        CONTENT["content/\nPyPDF2, notebooklm API"]
+        WEB["web/\nFastAPI, httpx"]
+        TUI["tui/\nTextual"]
+        MCP["mcp/\nFastMCP"]
+    end
+
+    FCIS_CLEAN --&gt; TMUX
+    FCIS_BACKLOG --&gt; PARKING
+    SESSION_STATE --&gt; FCIS_CLEAN
+
+    FCIS_CLEAN --&gt; DOCTOR
+    FCIS_BACKLOG --&gt; MCP
+
+    PARKING --&gt; HISTORY
+    HISTORY --&gt; CONTENT
+    HISTORY --&gt; WEB
+
+    style FCIS_CLEAN fill:#d5e8d4,stroke:#82b366
+    style FCIS_BACKLOG fill:#d5e8d4,stroke:#82b366
+    style SESSION_STATE fill:#d5e8d4,stroke:#82b366
+    style TMUX fill:#d5e8d4,stroke:#82b366
+    style PARKING fill:#dae8fc,stroke:#6c8ebf
+    style HISTORY fill:#dae8fc,stroke:#6c8ebf
+    style REVIEW_DB fill:#dae8fc,stroke:#6c8ebf
+    style DOCTOR fill:#fff2cc,stroke:#d6ae22
+    style CONTENT fill:#fff2cc,stroke:#d6ae22
+    style WEB fill:#f8cecc,stroke:#b85450
+    style TUI fill:#f8cecc,stroke:#b85450
+    style MCP fill:#f8cecc,stroke:#b85450</code></pre>
+<p><strong>Assessment</strong>: Dependency flow is mostly clean. The FCIS cores have zero external dependencies, which is excellent. The web and TUI layers are the heaviest (as expected).</p>
+<hr />
+<h2 id="5-code-quality-observations">5. Code Quality Observations<a class="headerlink" href="#5-code-quality-observations" title="Permanent link">&para;</a></h2>
+<h3 id="51-strengths">5.1 Strengths<a class="headerlink" href="#51-strengths" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>FCIS pattern is the best thing in this codebase</strong> — pure functions with zero-mock tests are the gold standard</li>
+<li><strong>Test pyramid is well-structured</strong> — 786 CI-safe tests, 13 integration, 9 UAT</li>
+<li><strong>Agent framework unification</strong> — <code>agents/shared/</code> eliminated ~700 lines of duplication</li>
+<li><strong>Web router separation</strong> — proper <code>web/routes/</code> structure, unlike mailgraph</li>
+<li><strong>IPC file protocol</strong> — simple, effective, no running server required</li>
+<li><strong>Doctor package</strong> — 19 health checks across 7 categories, <code>--json</code> output for AI agents</li>
+<li><strong>Compaction discipline</strong> — roadmap shows clear focus after stripping bloat</li>
+<li><strong>Documentation is exceptional</strong> — architecture docs, brainstorms, mentoring, solutions all well-organized</li>
+<li><strong>Migration system</strong> — v0 to v17 with proper versioning</li>
+<li><strong>Homebrew tap + PyPI</strong> — professional distribution</li>
+</ul>
+<h3 id="52-concerns">5.2 Concerns<a class="headerlink" href="#52-concerns" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>Severity</th>
+<th>Location</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_clean_logic.py</code> in <code>cli/</code></td>
+<td><strong>Medium</strong></td>
+<td><code>cli/_clean_logic.py</code></td>
+<td>FCIS core should not be in CLI package</td>
+</tr>
+<tr>
+<td>Two config systems</td>
+<td><strong>Medium</strong></td>
+<td><code>settings.py</code> vs <code>config_loader.py</code></td>
+<td>YAML vs JSON, different paths</td>
+</tr>
+<tr>
+<td>Service layer incomplete</td>
+<td><strong>Medium</strong></td>
+<td><code>services/review.py</code></td>
+<td>Not all consumers use it</td>
+</tr>
+<tr>
+<td>UAT tests excluded from CI</td>
+<td><strong>Medium</strong></td>
+<td><code>tests/test_tmux.py</code>, <code>test_uat_terminal.py</code></td>
+<td>tmux regressions not caught</td>
+</tr>
+<tr>
+<td>SSE via mtime polling</td>
+<td><strong>Low</strong></td>
+<td><code>web/routes/session.py</code></td>
+<td>500ms latency, acceptable for now</td>
+</tr>
+<tr>
+<td>Two SQLite databases</td>
+<td><strong>Low</strong></td>
+<td><code>sessions.db</code> + <code>review.db</code></td>
+<td>Intentional separation, but limits cross-queries</td>
+</tr>
+<tr>
+<td>VSCode circular import</td>
+<td><strong>Low</strong></td>
+<td><code>integrations/vscode.py</code></td>
+<td>Known issue, not fixed</td>
+</tr>
+<tr>
+<td><code>query_sessions.py</code> monolith</td>
+<td><strong>Low</strong></td>
+<td><code>agent-session-tools/query_sessions.py</code></td>
+<td>Roadmap item to split into CLI/formatters/resolver</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-data-flow-session-lifecycle">6. Data Flow — Session Lifecycle<a class="headerlink" href="#6-data-flow-session-lifecycle" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant USER as User
+    participant CLI as studyctl study
+    participant CLEAN as _clean_logic (FCIS)
+    participant BACKLOG as backlog_logic (FCIS)
+    participant TMUX as tmux.py
+    participant AGENT as AI Agent
+    participant IPC as IPC Files
+    participant SIDEBAR as Textual Sidebar
+    participant WEB as Web Dashboard
+    participant DB as sessions.db
+
+    USER-&gt;&gt;CLI: studyctl study "topic" --energy 7
+    CLI-&gt;&gt;CLEAN: plan_clean(sessions, ipc_dir)
+    CLEAN--&gt;&gt;CLI: CleanPlan (kill zombies)
+    CLI-&gt;&gt;TMUX: kill stale sessions
+    CLI-&gt;&gt;BACKLOG: build_backlog_notes(topic)
+    BACKLOG--&gt;&gt;CLI: Formatted backlog
+    CLI-&gt;&gt;DB: INSERT study_sessions
+    CLI-&gt;&gt;TMUX: create tmux session (agent + sidebar)
+    CLI-&gt;&gt;IPC: write session-state.json
+
+    loop During session
+        AGENT-&gt;&gt;IPC: update session-state.json (timer, topics)
+        SIDEBAR-&gt;&gt;IPC: poll every 1s
+        SIDEBAR--&gt;&gt;USER: display sidebar
+        WEB-&gt;&gt;IPC: SSE mtime polling
+        WEB--&gt;&gt;USER: display dashboard
+        AGENT-&gt;&gt;DB: park_topic() via MCP
+        AGENT-&gt;&gt;DB: record_topic_progress() via MCP
+    end
+
+    USER-&gt;&gt;CLI: studyctl study --end (or agent exits)
+    CLI-&gt;&gt;BACKLOG: plan_auto_persist(topics)
+    CLI-&gt;&gt;DB: UPDATE study_sessions (notes, duration)
+    CLI-&gt;&gt;TMUX: kill study sessions
+    CLI-&gt;&gt;IPC: clear IPC files</code></pre>
+<hr />
+<h2 id="7-comparison-with-mailgraph">7. Comparison with mailgraph<a class="headerlink" href="#7-comparison-with-mailgraph" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>mailgraph</th>
+<th>socratic-study-mentor</th>
+<th>Winner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Layer boundaries</strong></td>
+<td>Violated (query→api)</td>
+<td>Clean (FCIS pattern)</td>
+<td><strong>study-mentor</strong></td>
+</tr>
+<tr>
+<td><strong>Route organization</strong></td>
+<td>Monolith (676 lines)</td>
+<td>Proper routers</td>
+<td><strong>study-mentor</strong></td>
+</tr>
+<tr>
+<td><strong>Test strategy</strong></td>
+<td>407 tests, missing API/E2E</td>
+<td>799+ tests, 3 tiers</td>
+<td><strong>study-mentor</strong></td>
+</tr>
+<tr>
+<td><strong>FCIS pattern</strong></td>
+<td>Not used</td>
+<td>Consistently applied</td>
+<td><strong>study-mentor</strong></td>
+</tr>
+<tr>
+<td><strong>Service layer</strong></td>
+<td>Incomplete migration</td>
+<td>Partially wired</td>
+<td><strong>Tie</strong></td>
+</tr>
+<tr>
+<td><strong>Documentation</strong></td>
+<td>Exceptional (1274 lines current-state)</td>
+<td>Exceptional (multiple architecture docs)</td>
+<td><strong>Tie</strong></td>
+</tr>
+<tr>
+<td><strong>Distribution</strong></td>
+<td>uv tool install only</td>
+<td>PyPI + Homebrew</td>
+<td><strong>study-mentor</strong></td>
+</tr>
+<tr>
+<td><strong>Config management</strong></td>
+<td>Single TOML</td>
+<td>Two systems (YAML + JSON)</td>
+<td><strong>mailgraph</strong></td>
+</tr>
+<tr>
+<td><strong>Multi-database</strong></td>
+<td>SQLite + PG + Neo4j</td>
+<td>SQLite + SQLite (review.db)</td>
+<td><strong>mailgraph</strong> (more capable)</td>
+</tr>
+<tr>
+<td><strong>Agent support</strong></td>
+<td>MCP server only</td>
+<td>4 platforms + shared framework</td>
+<td><strong>study-mentor</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-recommendations-priority-order">8. Recommendations — Priority Order<a class="headerlink" href="#8-recommendations-priority-order" title="Permanent link">&para;</a></h2>
+<h3 id="p0-move-_clean_logicpy-out-of-cli">P0: Move <code>_clean_logic.py</code> Out of <code>cli/</code><a class="headerlink" href="#p0-move-_clean_logicpy-out-of-cli" title="Permanent link">&para;</a></h3>
+<p><strong>Why</strong>: FCIS core shouldn't be in the CLI package. It's a pure logic module.</p>
+<p><strong>Steps</strong>:
+1. Create <code>studyctl/logic/</code> package
+2. Move <code>_clean_logic.py</code> → <code>logic/clean_logic.py</code> (drop underscore)
+3. Move <code>backlog_logic.py</code> → <code>logic/backlog_logic.py</code> (already at top level, move into package)
+4. Update imports in <code>cli/_clean.py</code>, <code>cli/_topics.py</code>, <code>cli/_study.py</code>, <code>mcp/tools.py</code>
+5. Run full test suite to verify</p>
+<p><strong>Estimated effort</strong>: 0.5 days</p>
+<h3 id="p0-wire-service-layer-completely">P0: Wire Service Layer Completely<a class="headerlink" href="#p0-wire-service-layer-completely" title="Permanent link">&para;</a></h3>
+<p><strong>Why</strong>: <code>services/review.py</code> exists but <code>cli/_review.py</code> and <code>routes/cards.py</code> bypass it.</p>
+<p><strong>Steps</strong>:
+1. Move all review_db access patterns into <code>services/review.py</code>
+2. Update <code>cli/_review.py</code> to import from <code>services/review.py</code>
+3. Update <code>routes/cards.py</code> to import from <code>services/review.py</code>
+4. Add tests for <code>services/review.py</code> (currently missing)</p>
+<p><strong>Estimated effort</strong>: 1 day</p>
+<h3 id="p1-unify-config-systems">P1: Unify Config Systems<a class="headerlink" href="#p1-unify-config-systems" title="Permanent link">&para;</a></h3>
+<p><strong>Why</strong>: Two config systems (YAML + JSON) in same monorepo is confusing.</p>
+<p><strong>Steps</strong>:
+1. Migrate <code>agent-session-tools/config_loader.py</code> to use YAML format
+2. Consolidate config path to <code>~/.config/studyctl/config.yaml</code>
+3. Add migration script for existing JSON configs
+4. Update documentation</p>
+<p><strong>Estimated effort</strong>: 1 day</p>
+<h3 id="p1-add-nightly-ci-for-uat-tests">P1: Add Nightly CI for UAT Tests<a class="headerlink" href="#p1-add-nightly-ci-for-uat-tests" title="Permanent link">&para;</a></h3>
+<p><strong>Why</strong>: tmux-related regressions not caught in CI.</p>
+<p><strong>Steps</strong>:
+1. Add GitHub Actions workflow: <code>nightly-uat.yml</code>
+2. Run on macOS runner with tmux installed
+3. Execute <code>pytest -m integration</code> only
+4. Notify on failure</p>
+<p><strong>Estimated effort</strong>: 0.5 days</p>
+<h3 id="p2-split-query_sessionspy-monolith">P2: Split <code>query_sessions.py</code> Monolith<a class="headerlink" href="#p2-split-query_sessionspy-monolith" title="Permanent link">&para;</a></h3>
+<p><strong>Why</strong>: Roadmap item — currently does CLI, formatting, and resolution in one file.</p>
+<p><strong>Steps</strong>:
+1. Extract <code>formatters.py</code> (output formatting)
+2. Extract <code>resolver.py</code> (query resolution logic)
+3. Keep <code>query_sessions.py</code> as CLI entry point
+4. Update tests</p>
+<p><strong>Estimated effort</strong>: 1 day</p>
+<h3 id="p3-fix-vscode-circular-import">P3: Fix VSCode Circular Import<a class="headerlink" href="#p3-fix-vscode-circular-import" title="Permanent link">&para;</a></h3>
+<p><strong>Why</strong>: Known issue blocking VSCode integration.</p>
+<p><strong>Steps</strong>:
+1. Analyze import cycle in <code>integrations/vscode.py</code>
+2. Break cycle with lazy import or restructure
+3. Add test</p>
+<p><strong>Estimated effort</strong>: 0.5 days</p>
+<hr />
+<h2 id="9-documentation-health">9. Documentation Health<a class="headerlink" href="#9-documentation-health" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Status</th>
+<th>Accuracy</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docs/architecture/system-overview.md</code></td>
+<td>Current</td>
+<td>High</td>
+<td>Keep updating</td>
+</tr>
+<tr>
+<td><code>docs/roadmap.md</code></td>
+<td>Current</td>
+<td>High</td>
+<td>Keep updating</td>
+</tr>
+<tr>
+<td><code>docs/setup-guide.md</code></td>
+<td>Current</td>
+<td>High</td>
+<td>Keep updating</td>
+</tr>
+<tr>
+<td><code>docs/session-protocol.md</code></td>
+<td>Current</td>
+<td>High</td>
+<td>Keep updating</td>
+</tr>
+<tr>
+<td><code>docs/architecture/study-backlog-phase1.md</code></td>
+<td>Historical</td>
+<td>Medium</td>
+<td>Mark as completed</td>
+</tr>
+<tr>
+<td><code>docs/architecture/study-backlog-phase2.md</code></td>
+<td>Historical</td>
+<td>Medium</td>
+<td>Mark as completed</td>
+</tr>
+<tr>
+<td><code>docs/TESTING.md</code></td>
+<td>Current</td>
+<td>High</td>
+<td>Keep updating</td>
+</tr>
+<tr>
+<td><code>docs/cli-reference.md</code></td>
+<td>Current</td>
+<td>High</td>
+<td>Keep updating</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommendation</strong>: Add a <code>docs/HISTORICAL.md</code> index that clearly marks which documents are historical vs current, similar to mailgraph.</p>
+<hr />
+<h2 id="10-summary-scorecard">10. Summary Scorecard<a class="headerlink" href="#10-summary-scorecard" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Functionality</strong></td>
+<td>9/10</td>
+<td>4 core features working, v2.2 polish pending</td>
+</tr>
+<tr>
+<td><strong>Architecture</strong></td>
+<td>8/10</td>
+<td>FCIS pattern, clean package boundaries, proper routers</td>
+</tr>
+<tr>
+<td><strong>Code Quality</strong></td>
+<td>8/10</td>
+<td>Pure functions, zero-mock tests, consistent patterns</td>
+</tr>
+<tr>
+<td><strong>Test Coverage</strong></td>
+<td>9/10</td>
+<td>799+ tests, 3 tiers, but UAT excluded from CI</td>
+</tr>
+<tr>
+<td><strong>Documentation</strong></td>
+<td>9/10</td>
+<td>Exceptional, well-organized, some historical docs</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>8/10</td>
+<td>SSE via mtime polling (acceptable), no major bottlenecks</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>8/10</td>
+<td>pyrage encryption, proper file permissions (0700/0600)</td>
+</tr>
+<tr>
+<td><strong>Maintainability</strong></td>
+<td>8/10</td>
+<td>FCIS pattern makes changes easy, service layer incomplete</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Overall: 8.4/10</strong> — A well-architected, mature project with strong foundations. The FCIS pattern is exemplary. Remaining issues are polish items, not structural problems.</p>
+<hr />
+<h2 id="11-key-takeaway">11. Key Takeaway<a class="headerlink" href="#11-key-takeaway" title="Permanent link">&para;</a></h2>
+<p>The FCIS (Functional Core, Imperative Shell) pattern is the standout architectural decision in this codebase. It produces:
+- <strong>Zero-mock tests</strong> — pure functions that take data and return data
+- <strong>Easy reasoning</strong> — no side effects to track
+- <strong>Composable logic</strong> — functions can be combined without I/O concerns</p>
+<p>This is the pattern that mailgraph should adopt. The contrast between the two repos is instructive: mailgraph has layer violations and a monolithic app.py, while study-mentor has clean boundaries and testable cores.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "toc.follow", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/preferences.js"></script>
+      
+    
+  </body>
+</html>
