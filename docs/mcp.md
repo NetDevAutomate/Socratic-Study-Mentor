@@ -38,7 +38,7 @@ uv tool install ./packages/agent-session-tools
 | `session_clean` | Secret scrubbing with dry-run and audit trail |
 | `session_hotspots` | Most-discussed files ranked by frequency |
 
-See [System Overview: session-db-mcp](system-overview.md#session-db-mcp--mcp-server-for-session-access) for architecture diagrams, design decisions, and usage examples.
+See [System Overview: Session Database](system-overview.md#session-database-session-db-mcp) for architecture diagrams, design decisions, and usage examples.
 
 ---
 
